@@ -11,7 +11,7 @@ const tourSchema = new Schema<TourInterface>(
       trim: true,
       maxlength: [40, 'Tour name must have less than 41 characters'],
       minlength: [10, 'Tour name must have more than 9 characters'],
-      match: [/^[A-Za-z]+$/, 'Tour must only contain letters']
+      match: [/^[A-Za-z ]+$/, 'Tour must only contain letters']
     },
     slug: String,
     duration: {
@@ -129,13 +129,11 @@ tourSchema.virtual('reviews', {
 
 // DOCUMENT MIDDLEWARE, runs before .save() and .create()
 tourSchema.pre<TourInterface>('save', function (next) {
-  console.log('pre save 1')
-  this.slug = slugify(this.name!, { lower: true })
+  this.slug = slugify(this.name, { lower: true })
   next()
 })
 
 tourSchema.pre<Query<TourInterface, TourInterface>>(/^find/, function (next) {
-  console.log('pre search 1')
   this.find({ secretTour: { $ne: true } })
   ;(this as any).startTime = Date.now()
   next()

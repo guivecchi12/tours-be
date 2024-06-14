@@ -68,26 +68,7 @@ const resizeTourImages = catchAsync(
   }
 )
 
-const getAllTours = async (req: Request, res: Response, next: NextFunction) => {
-  try{
-    console.log('Get All Simple')
-    const {query, params} = req
-    console.log(`query: ${query} params: ${params}`)
-
-    const tours = await Tour.find({})
-    console.log("queried tours", tours)
-
-    res.status(201).json({
-      status: 'success',
-      data: {
-        tours
-      }
-    })
-
-  } catch(err){
-    next()
-  }
-}
+const getAllTours = getAll(Tour)
 const createTour = createOne(Tour)
 
 export default {

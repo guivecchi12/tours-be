@@ -133,25 +133,25 @@ tourSchema.pre<TourInterface>('save', function (next) {
   next()
 })
 
-tourSchema.pre<Query<TourInterface, TourInterface>>(/^find/, function (next) {
-  this.find({ secretTour: { $ne: true } })
-  ;(this as any).startTime = Date.now()
-  next()
-})
+// tourSchema.pre<Query<TourInterface, TourInterface>>(/^find/, function (next) {
+//   this.find({ secretTour: { $ne: true } })
+//   ;(this as any).startTime = Date.now()
+//   next()
+// })
 
-tourSchema.pre<Query<TourInterface, TourInterface>>(/^find/, function (next) {
-  console.log('pre search 2')
-  // this.populate({
-  //   path: 'guides',
-  //   select: '-__v -passwordChangedAt'
-  // })
-  next()
-})
+// tourSchema.pre<Query<TourInterface, TourInterface>>(/^find/, function (next) {
+//   console.log('pre search 2')
+//   // this.populate({
+//   //   path: 'guides',
+//   //   select: '-__v -passwordChangedAt'
+//   // })
+//   next()
+// })
 
-tourSchema.post(/^find/, function (doc, next) {
-  console.log('post search 1')
-  next()
-})
+// tourSchema.post(/^find/, function (doc, next) {
+//   console.log('post search 1')
+//   next()
+// })
 
 const Tour = mongoose.model<TourInterface>('Tour', tourSchema)
 

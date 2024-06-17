@@ -11,6 +11,7 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 
 import tourRouter from './routes/tourRoutes'
+import AppError from './utils/appError'
 
 const app = express()
 
@@ -96,15 +97,11 @@ app.use('/api/v1/tours', tourRouter)
 // app.use('/api/v1/reviews', reviewRouter)
 // app.use('/api/v1/booking', bookingRouter)
 
-// app.all('*', (req, res, next) => {
-//   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404))
-// })
+app.all('*', (req, res, next) => {
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404))
+})
 
 // app.use(globalErrorHandler)
 // export default app
-
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World')
-})
 
 export default app

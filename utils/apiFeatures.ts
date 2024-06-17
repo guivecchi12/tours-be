@@ -1,7 +1,5 @@
-import TourInterface from '../lib/Tour'
-
 class APIFeatures {
-  private query
+  public query
   private queryString
   constructor(query: any, queryString: any) {
     this.query = query
@@ -53,6 +51,7 @@ class APIFeatures {
   }
 
   getQuery() {
+    // console.log("returning query", this.query)
     return this.query
   }
 }

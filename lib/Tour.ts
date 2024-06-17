@@ -1,7 +1,7 @@
 import { Document, Schema } from 'mongoose'
 
 type Location = {
-  type: string
+  type: 'Point'
   coordinates: number[]
   address: string
   description: string
@@ -28,8 +28,8 @@ interface TourInterface extends Document {
   createdAt?: number
   startDates?: number[]
   secretTour?: Boolean
-  startLocation?: Location
-  locations?: Locations
+  startLocation: Location
+  locations: Locations
   guides?: Schema.Types.ObjectId[]
   startTime?: number
 }

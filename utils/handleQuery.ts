@@ -5,7 +5,6 @@ import APIFeatures from '../utils/apiFeatures'
 
 const getAll = (Model: mongoose.Model<any>) =>
   catchAsync(async (req, res, next) => {
-    console.log('Get All')
     const { query, params } = req
     const filter = params?.tourId ? { tour: params.tourId } : {}
 
@@ -15,19 +14,21 @@ const getAll = (Model: mongoose.Model<any>) =>
       .limitFields()
       .paginate()
 
-    const doc = await features.getQuery()
+    const doc = await features.query
 
     res.status(200).json({
       status: 'success',
       results: doc.length,
       data: doc
     })
+    console.log("respnse sent")
   })
 
 const createOne = (Model: mongoose.Model<any>) =>
   catchAsync(async (req, res, next) => {
     const { body } = req
     const doc = await Model.create(body)
+    
 
     res.status(201).json({
       status: 'success',

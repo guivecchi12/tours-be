@@ -20,7 +20,7 @@ const tourSchema = new Schema<TourInterface>(
     },
     maxGroupSize: {
       type: Number,
-      required: [true, 'Tour must have a group size']
+      required: [true, 'Tour must have a maximum group size']
     },
     difficulty: {
       type: String,

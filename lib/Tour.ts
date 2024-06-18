@@ -29,7 +29,7 @@ interface TourInterface extends Document {
   startDates?: number[]
   secretTour?: Boolean
   startLocation: Location
-  locations: Locations
+  locations?: Locations
   guides?: Schema.Types.ObjectId[]
   startTime?: number
 }

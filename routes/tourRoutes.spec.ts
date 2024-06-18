@@ -20,7 +20,7 @@ describe("Get All Tours", () => {
 
 describe("POST tours", () => {
   describe("successful request", () => {
-    test("should respond with 200 status code", async() => {
+    test("should responde with 201 and json", async() => {
       const response = await request(app)
       .post("/api/v1/tours")
       .send({
@@ -40,26 +40,6 @@ describe("POST tours", () => {
         }
       })
       expect(response.statusCode).toBe(201)
-    })
-    test("should specify json in the contnet type header", async () => {
-      const response = await request(app)
-      .post("/api/v1/tours")
-      .send({
-        "name": "Fake Tours Nagazagitbb",
-        "duration": 2,
-        "maxGroupSize": 1,
-        "difficulty": "easy",
-        "ratingsAverage": 3,
-        "price": 10,
-        "description": "My tour",
-        "imageCover": "http://image.png",
-        "startLocation": {
-            "coordinates": [
-                1,
-                2
-            ]
-        }
-      })
 
       expect(response.headers['content-type']).toEqual(expect.stringContaining("json"))
       expect(response.body.status).toBeDefined()
@@ -67,7 +47,6 @@ describe("POST tours", () => {
     })
   })
   describe("Validation error", () => {
-
     test("should respond with a status code 400", async() => {
       const response = await request(app)
       .post("/api/v1/tours")
@@ -77,6 +56,5 @@ describe("POST tours", () => {
       expect(response.body.status).toBeDefined()
       expect(response.body.status).toBe('error')
     })
-    
   })
 })

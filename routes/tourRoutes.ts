@@ -13,4 +13,10 @@ router
   .get(tourController.getAllTours)
   .post(tourController.createTour)
 
+router
+.route('/:id').get(tourController.getTour)
+// .patch(tourController.uploadTourImages, tourController.resizeTourImages, tourController.updateTour)
+.delete(tourController.deleteTour)
+  
+
 export default router

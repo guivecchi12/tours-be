@@ -4,7 +4,7 @@ import sharp from 'sharp'
 import Tour from '../models/tourModel'
 import AppError from '../utils/appError'
 import catchAsync from '../utils/catchAsync'
-import { createOne, getAll } from '../utils/handleQuery'
+import { createOne, getAll, getOne, deleteOne } from '../utils/handleQuery'
 import MulterRequest from '../lib/MulterRequest'
 
 const multerStorage = multer.memoryStorage()
@@ -68,12 +68,17 @@ const resizeTourImages = catchAsync(
   }
 )
 
+// const getTour = getOne(Tour, {path: 'reviews'})
+const getTour = getOne(Tour)
 const getAllTours = getAll(Tour)
 const createTour = createOne(Tour)
+const deleteTour = deleteOne(Tour)
 
 export default {
   uploadTourImages,
   resizeTourImages,
+  getTour,
   getAllTours,
-  createTour
+  createTour,
+  deleteTour
 }

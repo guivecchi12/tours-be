@@ -12,6 +12,7 @@ import cors from 'cors'
 
 import tourRouter from './routes/tourRoutes'
 import AppError from './utils/appError'
+import globalErrorHandler from './controllers/errorController'
 
 const app = express()
 
@@ -101,7 +102,6 @@ app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404))
 })
 
-// app.use(globalErrorHandler)
-// export default app
+app.use(globalErrorHandler)
 
 export default app

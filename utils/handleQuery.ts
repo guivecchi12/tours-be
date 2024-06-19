@@ -1,6 +1,28 @@
 import mongoose from 'mongoose'
 import catchAsync from './catchAsync'
 import APIFeatures from '../utils/apiFeatures'
+import AppError from './appError'
+
+type populateOptions = {
+  path: string
+}
+
+const getOne = (Model: mongoose.Model<any>, popOptions?: populateOptions) => 
+  catchAsync(async (req, res, next) => {
+    const query = Model.findById(req.params.id)
+    const doc = popOptions ? await query.populate(popOptions) : await query
+
+    console.log('doc', doc)
+
+    if(!doc){
+      return next(new AppError('No document found with that ID', 404))
+    }
+
+    res.status(200).json({
+      status: 'success',
+      data: doc
+    })
+  })
 
 
 const getAll = (Model: mongoose.Model<any>) =>
@@ -21,7 +43,6 @@ const getAll = (Model: mongoose.Model<any>) =>
       results: doc.length,
       data: doc
     })
-    console.log("respnse sent")
   })
 
 const createOne = (Model: mongoose.Model<any>) =>
@@ -38,6 +59,18 @@ const createOne = (Model: mongoose.Model<any>) =>
     })
   })
 
+const deleteOne = (Model: mongoose.Model<any>) => catchAsync(async (req, res, next) => {
+  const {params} = req
+  const doc = await Model.findByIdAndDelete(params.id)
 
+  if(!doc){
+    return next(new AppError('No document found with that ID', 404))
+  }
 
-export { createOne, getAll}
+  res.status(204).json({
+    status: 'success',
+    data: null
+  })
+})
+
+export { createOne, getOne, getAll, deleteOne}

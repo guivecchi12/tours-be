@@ -26,6 +26,10 @@ jobs:
       # Checks out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
+      - name: hello world
+        run: echo hello world
+      - name: ENV variables
+        run: echo {{DATABASE}}
       # Runs a set of commands using the runners shell
       - name: install dependencies
         run: npm install

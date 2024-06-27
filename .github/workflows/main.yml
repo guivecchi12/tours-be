@@ -3,7 +3,7 @@
 name: CI
 
 env: 
-  DATABASE: ${{ vars.DATABASE_URI }}
+  DATABASE_URI: ${{ vars.DATABASE_URI }}
   DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
 
 # Controls when the workflow will run
@@ -34,8 +34,8 @@ jobs:
       - name: install dependencies
         run: npm install
 
-      - name: Database
-        run: echo database - ${DATABASE}
+      - name: DATABASE_URI
+        run: echo database - ${DATABASE_URI}
       - name: Password
         run: echo secret ${DATABASE_PASSWORD}
         

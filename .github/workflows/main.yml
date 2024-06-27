@@ -34,8 +34,14 @@ jobs:
 
       - name: hello world
         run: echo hello world
-      - name: ENV variables
-        run: echo ${DATABASE} testVars ${TESTVARS} secret ${DATABASE_PASSWORD} testSecret ${TESTPASS}
+      - name: -- Start ENV --
+        run: echo database - ${DATABASE}
+      - name: database.database
+        run: echo testVars ${TESTVARS}
+      - name: database.secret
+        run: echo secret ${DATABASE_PASSWORD}
+      - name: .secret
+        run: echo testSecret ${TESTPASS}
       # Runs a set of commands using the runners shell
       - name: install dependencies
         run: npm install

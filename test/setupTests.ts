@@ -5,7 +5,7 @@ import dotenv from 'dotenv'
 dotenv.config();
 
 beforeAll(async () => {
-  const URI: string = process.env.DATABASE!.replace(
+  const URI: string = process.env.DATABASE_URI!.replace(
     '<PASSWORD>',
     process.env.DATABASE_PASSWORD!
   );

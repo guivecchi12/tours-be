@@ -4,7 +4,10 @@ name: CI
 
 env: 
   DATABASE: ${{ vars.DATABASE }}
-  DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+  DATABASE_PASSWORD: ${{ secrets.DATABASE.DATABASE_PASSWORD }}
+  TESTVARS: ${{ vars.DATABASE.DATABASE }}
+  TESTPASS: ${{ secrets.DATABASE_PASSWORD }}
+
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
@@ -32,7 +35,7 @@ jobs:
       - name: hello world
         run: echo hello world
       - name: ENV variables
-        run: echo ${DATABASE} secret ${DATABASE_PASSWORD} or ${{secrets.DATABASE_PASSWORD}}
+        run: echo ${DATABASE} testVars ${TESTVARS} secret ${DATABASE_PASSWORD} testSecret ${TESTPASS}
       # Runs a set of commands using the runners shell
       - name: install dependencies
         run: npm install

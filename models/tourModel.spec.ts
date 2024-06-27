@@ -1,6 +1,5 @@
 import mongoose from "mongoose"
 import TourModel from "./tourModel"
-import TourType from "../lib/Tour"
 
 const tourData = {
     "name": "Fake ten letter name",
@@ -30,13 +29,16 @@ describe("tours model", () => {
     })
 
     describe("POST", () => {
-        test("create & save successfully", async () => {
+        test("create, save & delete successfully", async () => {
             const validTour = new TourModel(tourData)
             const savedTour = await validTour.save()
     
             expect(savedTour._id).toBeDefined()
             expect(savedTour.name).toBe(tourData.name)
             expect(savedTour.price).toBe(tourData.price)
+
+            const deletedTour = await savedTour.deleteOne()
+            expect(deletedTour.deletedCount).toBe(1)
         })
         test("Fail on missing data", async() => {
             const missingData = new TourModel({})

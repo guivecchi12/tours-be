@@ -19,13 +19,12 @@ const handleValidationErrorDB = (err: any) => {
 }
 
 const sendErrorDev = (err: any, req: Request, res: Response) => {
-
-        res.status(err.statusCode).json({
-            status: err.status,
-            error: err,
-            message: err.message,
-            stack: err.stack
-        })
+    res.status(err.statusCode).json({
+        status: err.status,
+        error: err,
+        message: err.message,
+        stack: err.stack
+    })
 }
 
 const sendErrorProd = (err: any, req: Request, res: Response) => {
@@ -44,22 +43,16 @@ const handleJWTInvalidToken = () => new AppError('Invalid token. Please log in a
 const handleJWTExpiredToken = () => new AppError('Your token has expired. Please log in again!', 404)
 
 export default (err: any, req: Request, res: Response, next: NextFunction) => {
-    console.log("error type ====", typeof err)
     err.statusCode = err.statusCode || 500
     err.status = err.status || 'error'
 
-    if(process.env.NODE_ENV === 'development'){
-        sendErrorDev(err, req, res)
-    } else if(process.env.NODE_ENV === 'production'){
-        let error = Object.assign(err)
+    let error = Object.assign(err)
 
-        if(error.code === 11000) error = handleDuplicateFieldsDB(error)
-        if(error.name === 'CastError') error = handleCastErrorDB(error)
-        if(error.name === 'ValidationError') error = handleValidationErrorDB(error)
-        if(error.name === 'JsonWebTokenError') error = handleJWTInvalidToken()
-        if(error.name === 'TokenExpiredError') error = handleJWTExpiredToken()
+    if(error.code === 11000) error = handleDuplicateFieldsDB(error)
+    if(error.name === 'CastError') error = handleCastErrorDB(error)
+    if(error.name === 'ValidationError') error = handleValidationErrorDB(error)
+    if(error.name === 'JsonWebTokenError') error = handleJWTInvalidToken()
+    if(error.name === 'TokenExpiredError') error = handleJWTExpiredToken()
 
-        sendErrorProd(error, req, res)
-    }
-
+    process.env.NODE_ENV === 'development' ? sendErrorDev(error, req, res) : sendErrorProd(error, req, res)
 }

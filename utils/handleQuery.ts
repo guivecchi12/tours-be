@@ -12,8 +12,6 @@ const getOne = (Model: mongoose.Model<any>, popOptions?: populateOptions) =>
     const query = Model.findById(req.params.id)
     const doc = popOptions ? await query.populate(popOptions) : await query
 
-    console.log('doc', doc)
-
     if(!doc){
       return next(new AppError('No document found with that ID', 404))
     }
@@ -53,9 +51,7 @@ const createOne = (Model: mongoose.Model<any>) =>
 
     res.status(201).json({
       status: 'success',
-      data: {
-        data: doc
-      }
+      data: doc
     })
   })
 

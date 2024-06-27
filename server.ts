@@ -9,7 +9,7 @@ process.on('uncaughtException', (err: Error) => {
 
 import app from './app'
 
-const URI: string = process.env.DATABASE!.replace(
+const URI: string = process.env.DATABASE_URI!.replace(
   '<PASSWORD>',
   process.env.DATABASE_PASSWORD!
 )

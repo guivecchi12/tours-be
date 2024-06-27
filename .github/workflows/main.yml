@@ -3,10 +3,8 @@
 name: CI
 
 env: 
-  DATABASE: ${{ vars.DATABASE }}
-  DATABASE_PASSWORD: ${{ secrets.DATABASE.DATABASE_PASSWORD }}
-  TESTVARS: ${{ vars.DATABASE.DATABASE }}
-  TESTPASS: ${{ secrets.DATABASE_PASSWORD }}
+  DATABASE: ${{ vars.DATABASE_URI }}
+  DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
 
 # Controls when the workflow will run
 on:
@@ -41,12 +39,8 @@ jobs:
 
       - name: -- Start ENV --
         run: echo database - ${DATABASE}
-      - name: database.database
-        run: echo testVars ${TESTVARS}
       - name: database.secret
         run: echo secret ${DATABASE_PASSWORD}
-      - name: .secret
-        run: echo testSecret ${TESTPASS}
         
       - name: Run Test suite
         env: 

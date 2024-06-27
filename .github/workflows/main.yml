@@ -3,7 +3,7 @@
 name: CI
 
 env: 
-  DATABASE: ${{ vars.DATABASE_URI }}
+  DATABASE_URI: ${{ vars.DATABASE_URI }}
   DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
 
 # Controls when the workflow will run
@@ -29,21 +29,15 @@ jobs:
     steps:
       # Checks out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      - name: hello world
-        run: echo hello world
       
       # Runs a set of commands using the runners shell
       - name: install dependencies
         run: npm install
 
-      - name: -- Start ENV --
-        run: echo database - ${DATABASE}
-      - name: database.secret
+      - name: DATABASE_URI
+        run: echo database - ${DATABASE_URI}
+      - name: Password
         run: echo secret ${DATABASE_PASSWORD}
         
       - name: Run Test suite
-        env: 
-          DATABASE: ${{ vars.DATABASE }}
-          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
         run: npm test

@@ -89,9 +89,38 @@ describe("GET stats", () => {
   })
 })
 
-describe("GET tours-within", () => {})
-describe("GET tours distance", () => {})
-describe("GET monthly-plan", () => {})
+describe("GET tours-within", () => {
+  test("should respond with 3 tours within radius", async () => {
+      const response = await request(app)
+      .get('/api/v1/tours/tours-within/400/center/34.111745,-118.113491/unit/mi')
+
+      expect(response.body.status).toBe('success')
+      expect(response.body.results).toBe(3)
+  })
+})
+describe("GET tours distance", () => {
+   test("should show distance for all 9 tours", async () => {
+      const response = await request(app)
+      .get('/api/v1/tours/distances/34.111745,-118.113491/unit/mi')
+
+      expect(response.body.status).toBe('success')
+      expect(response.body.results).toBe(9)
+      expect(response.body.data[0]._id).toBeDefined()
+      expect(response.body.data[0].name).toBeDefined()
+      expect(response.body.data[0].distance).toBeGreaterThan(0)
+  })
+})
+describe("GET monthly-plan", () => {
+  test("should show all 6 tours available in 2021", async () => {
+      const response = await request(app)
+      .get('/api/v1/tours/monthly-plan/2021')
+
+      expect(response.body.status).toBe('success')
+      expect(response.body.results).toBe(6)
+      expect(response.body.data.plan).toBeDefined()
+      expect(response.body.data.plan[0].month).toBe(2)
+  })
+})
 
 describe("POST tours", () => {
   describe("successful request", () => {

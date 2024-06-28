@@ -21,7 +21,7 @@ const newTourBody = {
         }
 }
 
-describe("Get All Tours", () => {
+describe("GET All Tours", () => {
   describe("successful request", () => {
     test("should respond with 200 status code", async () => {
       await request(app)
@@ -37,7 +37,7 @@ describe("Get All Tours", () => {
   })
 })
 
-describe("Get One Tours", () => {
+describe("GET One Tours", () => {
   describe("successful request", () => {
     test("should respond with 200 status code", async () => {
       await request(app)
@@ -54,6 +54,44 @@ describe("Get One Tours", () => {
     })
   })
 })
+
+describe("GET top 5", () => {
+  describe("successful request", () => {
+    test("should respond with 200 status code", async () => {
+      await request(app)
+      .get('/api/v1/tours/top-5')
+      .expect(200)
+    })
+    test("should return Json", async() => {
+      const response = await request(app).get('/api/v1/tours/top-5')
+      expect(response.headers['content-type']).toEqual(expect.stringContaining("json"))
+      expect(response.body.status).toBeDefined()
+      expect(response.body.status).toBe('success')
+      expect(response.body.results).toBe(5)
+    })
+  })
+})
+
+describe("GET stats", () => {
+  test("should respond with 1 difficult tour", async () => {
+      const response = await request(app)
+      .get('/api/v1/tours/tour-stats')
+
+      expect(response.body.status).toBe('success')
+      expect(response.body.data[0].numTours).toBe(1)
+  })
+  test("should return 4 easy tours", async() => {
+    const response = await request(app)
+      .get('/api/v1/tours/tour-stats?rating=1')
+
+      expect(response.body.status).toBe('success')
+      expect(response.body.data[0].numTours).toBe(4)
+  })
+})
+
+describe("GET tours-within", () => {})
+describe("GET tours distance", () => {})
+describe("GET monthly-plan", () => {})
 
 describe("POST tours", () => {
   describe("successful request", () => {

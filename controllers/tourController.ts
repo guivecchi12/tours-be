@@ -81,8 +81,6 @@ const getTourStats = catchAsync(async (req, res, next) => {
   // Sort it by average price in ascending order
   const rating = req.query.rating ? parseFloat(`${req.query.rating}`) : 4.5
 
-  console.log(rating)
-
   const stats = await Tour.aggregate([
     {
       $match: { ratingsAverage: { $gte: rating } }

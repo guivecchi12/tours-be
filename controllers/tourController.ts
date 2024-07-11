@@ -4,7 +4,8 @@ import sharp from 'sharp'
 import Tour from '../models/tourModel'
 import AppError from '../utils/appError'
 import catchAsync from '../utils/catchAsync'
-import { createOne, getAll, getOne, deleteOne } from '../utils/handleQuery'
+import { createOne, getAll, getOne, deleteOne, updateOne } from '../utils/handleQuery'
+import MulterRequest from '../lib/MulterRequest'
 
 const multerStorage = multer.memoryStorage()
 
@@ -32,36 +33,39 @@ const uploadTourImages = upload.fields([
 
 const resizeTourImages = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const files = req.files
+    const files = (req as MulterRequest).files
+    const timestamp = Date.now()
+    
+    // Cover Image
+    if (files?.imageCover){
 
-    console.log(files)
-    // if (!files['imageCover'] || !files?.images) return next()
+      const imageCoverFilename = `tour-${req.params.id}-${timestamp}-cover.jpeg`
+      req.body.imageCover = imageCoverFilename
 
-    // const timestamp = Date.now()
+      console.log('new image filename', imageCoverFilename)
+      await sharp(files.imageCover[0].buffer)
+        .resize(2000, 1333)
+        .toFormat('jpeg')
+        .jpeg({ quality: 90 })
+        .toFile(`public/img/tours/${imageCoverFilename}`)
+    }
 
-    // // Cover Image
-    // const imageCoverFilename = `tour-${req.params.id}-${timestamp}-cover.jpeg`
-    // req.body.imageCover = imageCoverFilename
-    // await sharp(req.files.imageCover[0].buffer)
-    //   .resize(2000, 1333)
-    //   .toFormat('jpeg')
-    //   .jpeg({ quality: 90 })
-    //   .toFile(`public/img/tours/${imageCoverFilename}`)
+    // Images
+    if(files?.images){
+      req.body.images = []
 
-    // // Images
-    // req.body.images = []
-
-    // await Promise.all(
-    //   req.files.images.map(async (file, index) => {
-    //     const filename = `tour-${req.params.id}-${timestamp}-${index + 1}.jpeg`
-    //     await sharp(file.buffer)
-    //       .resize(2000, 1333)
-    //       .toFormat('jpeg')
-    //       .jpeg({ quality: 90 })
-    //       .toFile(`public/img/tours/${filename}`)
-    //     req.body.images?.push(filename)
-    //   })
-    // )
+      await Promise.all(
+        files.images.map(async (file, index) => {
+          const filename = `tour-${req.params.id}-${timestamp}-${index + 1}.jpeg`
+          await sharp(file.buffer)
+            .resize(2000, 1333)
+            .toFormat('jpeg')
+            .jpeg({ quality: 90 })
+            .toFile(`public/img/tours/${filename}`)
+          req.body.images?.push(filename)
+        })
+      )
+    }
 
     next()
   }
@@ -209,11 +213,13 @@ const getMonthlyPlan = catchAsync(async (req, res, next) => {
 const getTour = getOne(Tour)
 const getAllTours = getAll(Tour)
 const createTour = createOne(Tour)
+const updateTour = updateOne(Tour)
 const deleteTour = deleteOne(Tour)
 
 export default {
   uploadTourImages,
   resizeTourImages,
+  updateTour,
   aliasTopTours,
   getTourStats,
   getToursWithin,

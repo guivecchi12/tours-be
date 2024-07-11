@@ -34,9 +34,10 @@ router
   .get(tourController.getMonthlyPlan)
 
 router
-.route('/:id').get(tourController.getTour)
-// .patch(tourController.uploadTourImages, tourController.resizeTourImages, tourController.updateTour)
-.delete(tourController.deleteTour)
+  .route('/:id')
+  .get(tourController.getTour)
+  .patch(tourController.uploadTourImages, tourController.resizeTourImages, tourController.updateTour)
+  .delete(tourController.deleteTour)
   
 
 export default router

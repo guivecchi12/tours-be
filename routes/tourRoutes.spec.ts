@@ -1,26 +1,29 @@
 import request from 'supertest'
 import app from '../app'
+import path from 'path'
+import fs from 'fs'
 
 const tour = '5c88fa8cf4afda39709c2951'
 const tourName = "The Forest Hiker"
 
 const newTourBody = {
-        "name": "Fake Tours Nagazagitaa",
-        "duration": 2,
-        "maxGroupSize": 1,
-        "difficulty": "easy",
-        "ratingsAverage": 3,
-        "price": 10,
-        "description": "My tour",
-        "imageCover": "http://image.png",
-        "startLocation": {
-            "coordinates": [
-                1,
-                2
-            ]
-        }
+  "name": "Testing Tour",
+  "duration": 2,
+  "maxGroupSize": 1,
+  "difficulty": "easy",
+  "ratingsAverage": 3,
+  "price": 10,
+  "description": "My tour",
+  "imageCover": "http://image.png",
+  "startLocation": {
+      "coordinates": [
+          1,
+          2
+      ]
+  }
 }
 
+describe("GET Tours", () => {
 describe("GET All Tours", () => {
   describe("successful request", () => {
     test("should respond with 200 status code", async () => {
@@ -121,13 +124,16 @@ describe("GET monthly-plan", () => {
       expect(response.body.data.plan[0].month).toBe(2)
   })
 })
+})
 
-describe("POST tours", () => {
+describe("POST Tour", () => {
   describe("successful request", () => {
     test("should respond with 201 and json", async() => {
+      const postBody = {...newTourBody, name: `POST ${newTourBody.name}`}
+
       const response = await request(app)
-      .post("/api/v1/tours")
-      .send(newTourBody)
+        .post("/api/v1/tours")
+        .send(postBody)
 
       expect(response.statusCode).toBe(201)
       expect(response.headers['content-type']).toEqual(expect.stringContaining("json"))
@@ -142,12 +148,53 @@ describe("POST tours", () => {
   })
 })
 
-describe("DELETE tour", () => {
+describe("PATCH Tour", () => {
+  describe("successful request", () => {
+    test("should respond with 200 and json", async() => {
+      const postBody = {...newTourBody, name: `PATCH ${newTourBody.name}`}
+
+      // Create new tour
+      const createResponse = await request(app)
+        .post("/api/v1/tours")
+        .send(postBody)
+
+      expect(createResponse.statusCode).toBe(201)
+
+      const tourId = createResponse.body.data._id
+
+      const updatedTour = await request(app)
+        .patch(`/api/v1/tours/${tourId}`)
+        .field('price', 99)
+        .attach('images', path.resolve(__dirname, 'public/img/test-files/ocean.jpg'))
+      
+      expect(updatedTour.statusCode).toBe(200)
+      expect(updatedTour.body.data.price).toBe(99)
+      
+      // const uploadDir = path.join(__dirname, 'public/img/tours')
+      // const uploadedFiles = fs.readdirSync(uploadDir)
+
+      // const uploadedFile = uploadedFiles.find(file => file.startsWith(`tour-${tourId}`))
+      // // expect(uploadedFile).toBeDefined()
+
+      // // Cleanup
+      // if(uploadedFile) fs.unlinkSync(path.join(uploadDir, uploadedFile))
+
+      const deleteTour = await request(app)
+        .delete(`/api/v1/tours/${tourId}`)
+
+      expect(deleteTour.statusCode).toBe(204)
+    })
+  })
+})
+
+describe("DELETE Tour", () => {
   describe("successful request", () => {
     test("should respond with 204 and content", async () => {
+      const postBody = {...newTourBody, name: `DELETE ${newTourBody.name}`}
       const createResponse = await request(app)
       .post("/api/v1/tours")
-      .send(newTourBody)
+      .send(postBody)
+
       expect(createResponse.statusCode).toBe(201)
 
       const deleteTour = createResponse.body.data._id

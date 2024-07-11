@@ -55,6 +55,23 @@ const createOne = (Model: mongoose.Model<any>) =>
     })
   })
 
+const updateOne = (Model: mongoose.Model<any>) => catchAsync(async (req, res, next) => {
+  const {body, params} = req
+
+  const updatedDoc = await Model.findByIdAndUpdate(params.id, body, {
+    new: true,
+    runValidators: true
+  })
+
+  if(!updatedDoc) return next(new AppError('No document found with that ID', 404))
+
+  res.status(200).json({
+    status: 'success',
+    data: updatedDoc
+  })
+  
+})
+
 const deleteOne = (Model: mongoose.Model<any>) => catchAsync(async (req, res, next) => {
   const {params} = req
   const doc = await Model.findByIdAndDelete(params.id)
@@ -69,4 +86,4 @@ const deleteOne = (Model: mongoose.Model<any>) => catchAsync(async (req, res, ne
   })
 })
 
-export { createOne, getOne, getAll, deleteOne}
+export { createOne, getOne, updateOne, getAll, deleteOne}

@@ -43,7 +43,7 @@ The application will be available at http://localhost:3000.
 
 ### API Endpoints
 
-Tours
+##Tours
 GET /api/v1/tours - Get all tours
 POST /api/v1/tours - Create a new tour
 GET /api/v1/tours/:id - Get a tour by ID
@@ -55,8 +55,15 @@ GET /api/v1/tours/tours-within/:distance/center/:latlng/unit/:unit - Get tours w
 GET /api/v1/tours/distance/:distance/unit/:unit - Get tour distances from point
 GET /api/v1/tours/monthly-plan/:year - Get tours grouped by month for the year
 
+##USER
+GET /api/v1/users/:id - Get user
+POST /api/v1/users - Create new user
+#Auth
+GET /api/v1/users/login - Login user
 
-Bookings
+
+
+##Bookings
 GET /api/bookings - Get all bookings
 POST /api/bookings - Create a new booking
 GET /api/bookings/:id - Get a booking by ID

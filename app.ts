@@ -1,4 +1,3 @@
-import { Request, Response } from 'express'
 import compression from 'compression'
 import path from 'path'
 import express from 'express'
@@ -11,6 +10,7 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 
 import tourRouter from './routes/tourRoutes'
+import userRouter from './routes/userRoutes'
 import AppError from './utils/appError'
 import globalErrorHandler from './controllers/errorController'
 
@@ -94,7 +94,7 @@ app.use(compression())
 
 // Routes
 app.use('/api/v1/tours', tourRouter)
-// app.use('/api/v1/users', userRouter)
+app.use('/api/v1/users', userRouter)
 // app.use('/api/v1/reviews', reviewRouter)
 // app.use('/api/v1/booking', bookingRouter)
 

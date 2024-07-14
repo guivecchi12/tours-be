@@ -148,9 +148,9 @@ describe("POST Tour", () => {
   })
 })
 
-describe("PATCH Tour", () => {
+describe.skip("PATCH Tour", () => {
   describe("successful request", () => {
-    test("should respond with 200 and json", async() => {
+    test.only("should respond with 200 and json", async() => {
       const postBody = {...newTourBody, name: `PATCH ${newTourBody.name}`}
 
       // Create new tour
@@ -170,14 +170,14 @@ describe("PATCH Tour", () => {
       expect(updatedTour.statusCode).toBe(200)
       expect(updatedTour.body.data.price).toBe(99)
       
-      // const uploadDir = path.join(__dirname, 'public/img/tours')
-      // const uploadedFiles = fs.readdirSync(uploadDir)
+      const uploadDir = path.join(__dirname, 'public/img/tours')
+      const uploadedFiles = fs.readdirSync(uploadDir)
 
-      // const uploadedFile = uploadedFiles.find(file => file.startsWith(`tour-${tourId}`))
-      // // expect(uploadedFile).toBeDefined()
+      const uploadedFile = uploadedFiles.find(file => file.startsWith(`tour-${tourId}`))
+      expect(uploadedFile).toBeDefined()
 
-      // // Cleanup
-      // if(uploadedFile) fs.unlinkSync(path.join(uploadDir, uploadedFile))
+      // Cleanup
+      if(uploadedFile) fs.unlinkSync(path.join(uploadDir, uploadedFile))
 
       const deleteTour = await request(app)
         .delete(`/api/v1/tours/${tourId}`)

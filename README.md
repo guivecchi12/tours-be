@@ -43,29 +43,29 @@ The application will be available at http://localhost:3000.
 
 ### API Endpoints
 
-##Tours
-GET /api/v1/tours - Get all tours
-POST /api/v1/tours - Create a new tour
-GET /api/v1/tours/:id - Get a tour by ID
-PATCH /api/v1/tours/:id - Update a tour by ID
-DELETE /api/v1/tours/:id - Delete a tour by ID
-GET /api/v1/tours/top-5 - Get top 5 rated tours in order of rating then price
-GET /api/v1/tours/tour-stats?rating - Get stats for tours at or above {rating}, default rating is set to 4.5
-GET /api/v1/tours/tours-within/:distance/center/:latlng/unit/:unit - Get tours within a radius of location
-GET /api/v1/tours/distance/:distance/unit/:unit - Get tour distances from point
-GET /api/v1/tours/monthly-plan/:year - Get tours grouped by month for the year
+#### Tours
+- GET /api/v1/tours - Get all tours
+- POST /api/v1/tours - Create a new tour
+- GET /api/v1/tours/:id - Get a tour by ID
+- PATCH /api/v1/tours/:id - Update a tour by ID
+- DELETE /api/v1/tours/:id - Delete a tour by ID
+- GET /api/v1/tours/top-5 - Get top 5 rated tours in order of rating then price
+- GET /api/v1/tours/tour-stats?rating - Get stats for tours at or above {rating}, default rating is set to 4.5
+- GET /api/v1/tours/tours-within/:distance/center/:latlng/unit/:unit - Get tours within a radius of location
+- GET /api/v1/tours/distance/:distance/unit/:unit - Get tour distances from point
+- GET /api/v1/tours/monthly-plan/:year - Get tours grouped by month for the year
 
-##USER
-GET /api/v1/users/:id - Get user
-POST /api/v1/users - Create new user
-#Auth
-GET /api/v1/users/login - Login user
+#### USER
+- GET /api/v1/users/:id - Get user
+- POST /api/v1/users - Create new user
+##### Auth
+- GET /api/v1/users/login - Login user
 
 
 
-##Bookings
-GET /api/bookings - Get all bookings
-POST /api/bookings - Create a new booking
-GET /api/bookings/:id - Get a booking by ID
-PUT /api/bookings/:id - Update a booking by ID
-DELETE /api/bookings/:id - Delete a booking by ID
+#### Bookings
+- GET /api/bookings - Get all bookings
+- POST /api/bookings - Create a new booking
+- GET /api/bookings/:id - Get a booking by ID
+- PUT /api/bookings/:id - Update a booking by ID
+- DELETE /api/bookings/:id - Delete a booking by ID

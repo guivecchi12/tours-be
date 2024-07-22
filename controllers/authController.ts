@@ -36,7 +36,7 @@ const createSendToken = (user: any, statusCode: number, req: Request, res: Respo
 }
 
 const checkPassword = async (passwordAttempt: string, userPassword: string) => {
-    await bcrypt.compareSync(passwordAttempt, userPassword)
+  return await bcrypt.compareSync(passwordAttempt, userPassword)
 }
 
 const login = catchAsync(async (req, res, next) => {
@@ -45,8 +45,9 @@ const login = catchAsync(async (req, res, next) => {
     if(!email || !password) return next(new AppError('Email and password required', 400))
 
     const user = await User.findOne({email}).select('+password')
+    console.log('user', !!user)
 
-    if(!user || !(checkPassword(password, user.password))) return next(new AppError('Incorrect email/password', 401))
+    if(!user || !await(checkPassword(password, user.password))) return next(new AppError('Incorrect email/password', 401))
 
     createSendToken(user, 200, req, res)
 })
